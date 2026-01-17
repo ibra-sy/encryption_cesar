@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choix de l'action - Chiffrement de César</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-darker: #050810;
+            --bg-card: #1a1f3a;
+            --bg-card-hover: #23284a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --accent-green: #00ff41;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #9333ea;
+            --border-color: #2d3748;
+            --glow-green: rgba(0, 255, 65, 0.3);
+            --glow-cyan: rgba(0, 212, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-darker);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 255, 65, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(0, 212, 255, 0.05) 0px, transparent 50%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--text-primary);
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .card-body {
+            padding: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .title-main {
+            color: var(--accent-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle-main {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .action-card {
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+            transition: all 0.3s ease;
+            background: var(--bg-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .action-card.encrypt::before {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+        }
+
+        .action-card.decrypt::before {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-green);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--glow-green);
+            color: inherit;
+        }
+
+        .action-card:hover::before {
+            opacity: 1;
+        }
+
+        .action-card.encrypt:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--glow-green);
+        }
+
+        .action-card.decrypt:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(147, 51, 234, 0.3);
+        }
+
+        .icon-large {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-card h2 {
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-card);
+        }
+
+        .back-link:hover {
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 10px var(--glow-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="title-main">Choisissez une action</h1>
+                <p class="subtitle-main">Que souhaitez-vous faire ?</p>
+                
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <a href="{{ url_for('page_chiffrer') }}" class="action-card encrypt">
+                            <span class="icon-large">🔒</span>
+                            <h2>Chiffrer</h2>
+                            <p>Transformez votre message en texte chiffré à l'aide d'une clé de décalage</p>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <a href="{{ url_for('page_dechiffrer') }}" class="action-card decrypt">
+                            <span class="icon-large">🔓</span>
+                            <h2>Déchiffrer</h2>
+                            <p>Retrouvez le message original à partir d'un texte chiffré et de la clé</p>
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="javascript:history.back()" class="back-link">← Retour</a>
+                <a href="{{ url_for('index') }}" class="back-link ms-2">Accueil</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

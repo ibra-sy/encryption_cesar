@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP Cybersécurité - Chiffrement de César</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-darker: #050810;
+            --bg-card: #1a1f3a;
+            --bg-card-hover: #23284a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --accent-green: #00ff41;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #9333ea;
+            --border-color: #2d3748;
+            --glow-green: rgba(0, 255, 65, 0.3);
+            --glow-cyan: rgba(0, 212, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-darker);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 255, 65, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(0, 212, 255, 0.05) 0px, transparent 50%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--text-primary);
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 255, 65, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px var(--glow-green);
+        }
+
+        .card-body {
+            padding: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .title-main {
+            color: var(--accent-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 2.75rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            text-shadow: 0 0 10px var(--glow-green);
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle-main {
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1.35rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .lead-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: rgba(0, 255, 65, 0.05);
+            border-left: 3px solid var(--accent-green);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-card h3 {
+            color: var(--accent-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-card ul {
+            margin-bottom: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .info-card li {
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info-card li::before {
+            content: "> ";
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-cyan) 100%);
+            border: none;
+            color: var(--bg-darker);
+            padding: 0.875rem 2.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px var(--glow-green);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--glow-green), 0 0 20px var(--glow-green);
+            color: var(--bg-darker);
+        }
+
+        .btn-primary-custom:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="title-main">[TP] CYBERSÉCURITÉ</h1>
+                <p class="subtitle-main">Chiffrement de César</p>
+                
+                <p class="lead-text">
+                    Bienvenue dans cette application pédagogique dédiée au chiffrement de César, 
+                    l'un des plus anciens algorithmes de chiffrement par substitution.
+                </p>
+                
+                <div class="info-card">
+                    <h3>Objectifs du TP</h3>
+                    <ul>
+                        <li>Comprendre le fonctionnement du chiffrement de César</li>
+                        <li>Implémenter le chiffrement et le déchiffrement de messages</li>
+                        <li>Gérer tous les types de caractères (lettres, chiffres, symboles)</li>
+                        <li>Utiliser les opérations ASCII avec ord() et chr()</li>
+                    </ul>
+                </div>
+                
+                <a href="{{ url_for('choix') }}" class="btn btn-primary-custom">Commencer</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
